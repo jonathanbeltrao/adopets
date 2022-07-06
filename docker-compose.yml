@@ -1,0 +1,51 @@
+version: '3.7'
+services:
+  adopets-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: php
+    container_name: adopets
+    ports:
+      - 8080:80
+    volumes:
+      - ./:/data/adopets
+      - /data/adopets/vendor
+    networks:
+      - default
+    depends_on:
+      - adopets-db
+    links:
+      - adopets-db
+    working_dir: /data/adopets/
+
+  adopets-nginx:
+    container_name: nginx_adopets
+    image: nginx:1.16.0
+    ports:
+      - 80:80
+    volumes:
+      - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - adopets-api
+    links:
+      - adopets-db
+
+  adopets-db:
+    image: mysql:5.7
+    container_name: database_adopets
+    volumes:
+      - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: adopets
+    ports:
+      - 3306:3306
+    restart: always
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
