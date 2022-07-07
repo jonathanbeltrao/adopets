@@ -21,7 +21,8 @@ services:
 
   adopets-nginx:
     container_name: nginx_adopets
-    image: nginx:1.16.0
+    platform: linux/x86_64
+    image: nginx:latest
     ports:
       - 80:80
     volumes:
@@ -33,6 +34,7 @@ services:
       - adopets-db
 
   adopets-db:
+    platform: linux/x86_64
     image: mysql:5.7
     container_name: database_adopets
     volumes:
@@ -41,7 +43,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: adopets
     ports:
-      - 3306:3306
+      - 3336:3306
     restart: always
     networks:
       - default
