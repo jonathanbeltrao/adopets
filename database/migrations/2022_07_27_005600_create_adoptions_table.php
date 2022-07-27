@@ -20,7 +20,8 @@ class CreateAdoptionsTable extends Migration
             $table->foreingId('stackholder_id')->constrained();
             $table->date('visit_date');
             $table->date('adoption_date');
-            $table->longText('adoption_date');
+            $table->longText('owner_review');
+            $table->longText('stakholder_review');
             $table->timestamps();
         });
     }
