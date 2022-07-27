@@ -16,10 +16,14 @@ class Pets extends Migration
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('especie_id')->constrained();
-            $table->string('nome');
-            $table->string('idade');
-            $table->decimal('peso')->null();
-            $table->string('tamanho')->null();
+            $table->foreignId('owner_id')->constrained();
+            $table->string('name');
+            $table->string('breed');
+            $table->string('age');
+            $table->decimal('weight')->null();
+            $table->string('size')->null();
+            $table->longText('observations');
+            $table->string('vaccines');
             $table->timestamps();
             $table->softDeletes();
         });
